@@ -28,9 +28,4 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     private PortionUnit portionUnit;
 
-// Bidireccional
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ID_PREPARATION")
-//    private Recipe recipe;
-
 }

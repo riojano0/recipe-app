@@ -4,6 +4,7 @@ package com.riojano0.recipe.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -30,15 +31,7 @@ public class Preparation {
     @Column(name = "READY_IN")
     private int readyIn;
 
-// Bidireccional
-//    @OneToMany(mappedBy = "preparation", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-//    private List<Step> steps;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Step> steps;
-
-// Bidireccional
-//    @OneToOne(mappedBy = "preparation",fetch = FetchType.LAZY)
-//    private Recipe recipe;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Step> steps = new ArrayList<>();
 
 }

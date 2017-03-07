@@ -2,8 +2,11 @@ package com.riojano0.recipe.domain;
 
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,6 +27,9 @@ public class Recipe {
     @Column(name = "NAMED")
     private String name;
 
+    @Column(name = "IMAGE")
+    private String image;
+
     @Column(name = "DESCRIPTION")
     private String description;
 
@@ -31,12 +37,9 @@ public class Recipe {
     @JoinColumn(name = "ID_PREPARATION")
     private Preparation preparation;
 
-// Bidireccional
-//    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-//    private List<Ingredient> ingredients;
-
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
 
 
 }

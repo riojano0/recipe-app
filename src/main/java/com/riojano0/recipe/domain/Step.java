@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Step")
+@Table(name = "STEPS")
 public class Step {
 
     @Id
@@ -23,10 +23,5 @@ public class Step {
     private int number;
     @Column(name = "DESCRIPTION")
     private String description;
-
-// Bidireccional
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ID_PREPARATION")
-//    private Preparation preparation;
 
 }

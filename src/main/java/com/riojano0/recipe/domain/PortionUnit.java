@@ -7,10 +7,9 @@ public enum PortionUnit {
     KILOGRAM, GRAM,
 
     //Liter
-    LITER,
+    LITER, CC,
 
     //Units
-    UNIT, CUP, TEASPOONT, CLOVES
-
+    UNIT, CUP, TEASPOON, TABLESPOON, CLOVES, CN, PACK
 
 }
