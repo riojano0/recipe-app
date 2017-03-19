@@ -20,6 +20,7 @@ public class Preparation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     @Column(name = "TIME_PREPARATION")

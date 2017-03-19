@@ -22,6 +22,7 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     @Column(name = "NAMED")
