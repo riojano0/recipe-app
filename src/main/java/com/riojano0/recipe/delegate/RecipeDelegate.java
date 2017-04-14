@@ -2,10 +2,10 @@ package com.riojano0.recipe.delegate;
 
 import com.riojano0.recipe.domain.Recipe;
 import com.riojano0.recipe.repository.RecipeRepository;
+import com.riojano0.recipe.transformer.RecipeTransformer;
 import lombok.NoArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +15,15 @@ import java.util.List;
 @Component
 public class RecipeDelegate {
 
-    final static Logger logger = Logger.getLogger(RecipeDelegate.class);
+    private final static Logger logger = Logger.getLogger(RecipeDelegate.class);
 
     @Autowired
     private RecipeRepository recipeRepository;
 
-    public List<Recipe> getRecipes(List<String> ingredients) {
+    @Autowired
+    private RecipeTransformer recipeTransformer;
+
+    public ResponseEntity getRecipes(List<String> ingredients) {
 
         List<Recipe> recipes;
         if (ingredients == null) {
@@ -28,27 +31,28 @@ public class RecipeDelegate {
             logger.info("GET - /recipe - Recipe All");
         } else {
             recipes = recipeRepository.findDistinctByIngredientsNameInIgnoreCase(ingredients);
-            logger.info("GET - /recipe - Recipe by ingredients: "+ingredients);
+            logger.info("GET - /recipe - Recipe by ingredients: " + ingredients);
         }
 
-        return recipes;
+        return recipeTransformer.transform(recipes);
     }
 
-    public Recipe getRecipeById(Long id) {
+    public ResponseEntity getRecipeById(Long id) {
 
-        logger.info("GET - /recipe - Recipe by ID: "+id);
-        return recipeRepository.findOne(id);
+        logger.info("GET - /recipe - Recipe by ID: " + id);
+        return recipeTransformer.transform(recipeRepository.findOne(id));
 
     }
 
-    public ResponseEntity<String> saveRecipe(Recipe recipe) {
-        ResponseEntity<String> response;
+    public ResponseEntity saveRecipe(Recipe recipe) {
+        ResponseEntity response;
+
         try {
             recipeRepository.save(recipe);
-            response = new ResponseEntity<>("Save Succesfull", HttpStatus.CREATED);
+            response = recipeTransformer.responseNoContent();
             logger.info("POST - /recipe - Save a new recipe");
         } catch (Exception e) {
-            response = new ResponseEntity<>("Save Failed", HttpStatus.BAD_REQUEST);
+            response = recipeTransformer.responseUnknowError();
             logger.warn("POST - /recipe - cant save the new recipe");
         }
 
