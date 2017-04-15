@@ -27,18 +27,18 @@ public class RecipeTransformer {
                 .body(recipes);
     }
 
-    public ResponseEntity responseNoContent() {
+    public ResponseEntity responseCreated() {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
     }
 
-    public ResponseEntity responseUnknowError() {
+    public ResponseEntity responseUnknownError() {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Interal Server", "Unknow", "Something go wrong"));
+                .body(new ErrorResponse("Internal Server", "Unknown", "Something go wrong"));
     }
 
 }

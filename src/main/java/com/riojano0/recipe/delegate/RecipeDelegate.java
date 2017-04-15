@@ -23,6 +23,8 @@ public class RecipeDelegate {
     @Autowired
     private RecipeTransformer recipeTransformer;
 
+    private ResponseEntity response;
+
     public ResponseEntity getRecipes(List<String> ingredients) {
 
         List<Recipe> recipes;
@@ -31,7 +33,13 @@ public class RecipeDelegate {
             logger.info("GET - /recipe - Recipe All");
         } else {
             recipes = recipeRepository.findDistinctByIngredientsNameInIgnoreCase(ingredients);
-            logger.info("GET - /recipe - Recipe by ingredients: " + ingredients);
+            if (recipes.isEmpty()){
+                logger.info("GET - /recipe - Recipe by ingredients: " + ingredients + " - Cant find recipes");
+            }
+            else{
+                logger.info("GET - /recipe - Recipe by ingredients: " + ingredients);
+            }
+
         }
 
         return recipeTransformer.transform(recipes);
@@ -39,20 +47,27 @@ public class RecipeDelegate {
 
     public ResponseEntity getRecipeById(Long id) {
 
-        logger.info("GET - /recipe - Recipe by ID: " + id);
-        return recipeTransformer.transform(recipeRepository.findOne(id));
+        Recipe recipe;
+        recipe = recipeRepository.findOne(id);
+
+        if (recipe == null) {
+            logger.info("GET - /recipe - Recipe by ID: " + id + " - Cant find the recipe");
+        } else {
+            logger.info("GET - /recipe - Recipe by ID: " + id);
+        }
+        response = recipeTransformer.transform(recipe);
+        return response;
 
     }
 
     public ResponseEntity saveRecipe(Recipe recipe) {
-        ResponseEntity response;
 
         try {
             recipeRepository.save(recipe);
-            response = recipeTransformer.responseNoContent();
+            response = recipeTransformer.responseCreated();
             logger.info("POST - /recipe - Save a new recipe");
         } catch (Exception e) {
-            response = recipeTransformer.responseUnknowError();
+            response = recipeTransformer.responseUnknownError();
             logger.warn("POST - /recipe - cant save the new recipe");
         }
 

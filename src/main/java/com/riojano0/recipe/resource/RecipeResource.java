@@ -47,7 +47,7 @@ public class RecipeResource {
             @ApiResponse(code = 400, message = "For cases like bad request body or problem with connection", response = ErrorResponse.class)
     })
     @RequestMapping(value = "/recipe", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity saveRecipeNew(@RequestBody Recipe recipe) {
+    public ResponseEntity saveRecipe(@RequestBody Recipe recipe) {
         ResponseEntity response;
 
         response = recipeValidator.validate(recipe);
